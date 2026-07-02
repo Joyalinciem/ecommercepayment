@@ -1,0 +1,35 @@
+{
+  "name": "ecommerce-marketplace-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend for a multi-vendor ecommerce marketplace with payments, reviews, notifications, and dashboards.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev:backend": "nodemon src/index.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "npm run dev:frontend"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bull": "^4.10.2",
+    "cloudinary": "^1.38.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "ioredis": "^5.3.4",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.4.2",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.4",
+    "qrcode": "^1.5.4",
+    "razorpay": "^2.7.3",
+    "stripe": "^12.12.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

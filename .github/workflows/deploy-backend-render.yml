@@ -1,0 +1,22 @@
+name: Trigger Render Backend Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy
+        if: ${{ secrets.RENDER_SERVICE_ID && secrets.RENDER_API_KEY }}
+        env:
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          echo "Triggering deploy for Render service $RENDER_SERVICE_ID"
+          PAYLOAD=$(jq -n --arg sid "$RENDER_SERVICE_ID" '{serviceId: $sid, clearCache: true}')
+          curl -sS -X POST "https://api.render.com/deploys" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD"
