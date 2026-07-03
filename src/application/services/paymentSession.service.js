@@ -60,7 +60,8 @@ class PaymentSessionService {
         const orderOptions = {
           amount: toRazorpayAmountInPaise(amount),
           currency: 'INR',
-          receipt: paymentId,
+          // Razorpay receipt has a max length of 40 characters — truncate paymentId
+          receipt: String(paymentId).slice(0, 40),
           payment_capture: 1,
         };
 
@@ -69,8 +70,12 @@ class PaymentSessionService {
           await paymentRepository.updateByPaymentId(paymentId, { razorpayOrderId: razorpayOrder.id });
         }
       } catch (err) {
-        razorpayOrderError = err.message;
-        console.warn('Razorpay order creation failed:', err.message);
+        // Capture more information for debugging (network, response, stack)
+        razorpayOrderError = err && (err.message || JSON.stringify(err));
+        console.warn('Razorpay order creation failed:', err);
+        if (err && err.error) console.warn('Razorpay error object:', err.error);
+        if (err && err.statusCode) console.warn('Razorpay statusCode:', err.statusCode);
+        if (err && err.stack) console.warn(err.stack);
         throw new Error(`Unable to create Razorpay order${razorpayOrderError ? `: ${razorpayOrderError}` : ''}`);
       }
 
