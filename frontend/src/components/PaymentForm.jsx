@@ -209,72 +209,6 @@ export default function PaymentForm() {
           prefill.vpa = formData.upiId;
         }
 
-        const displayConfig = selectedMethod === 'UPI'
-          ? {
-              display: {
-                blocks: [
-                  {
-                    name: 'Pay with UPI',
-                    instruments: [{ method: 'upi' }],
-                  },
-                ],
-                hide: {
-                  card: true,
-                  netbanking: true,
-                  wallet: true,
-                },
-              },
-            }
-          : selectedMethod === 'Card'
-            ? {
-                display: {
-                  blocks: [
-                    {
-                      name: 'Pay with Card',
-                      instruments: [{ method: 'card' }],
-                    },
-                  ],
-                  hide: {
-                    upi: true,
-                    netbanking: true,
-                    wallet: true,
-                  },
-                },
-              }
-            : selectedMethod === 'Net Banking'
-              ? {
-                  display: {
-                    blocks: [
-                      {
-                        name: 'Pay with Net Banking',
-                        instruments: [{ method: 'netbanking' }],
-                      },
-                    ],
-                    hide: {
-                      upi: true,
-                      card: true,
-                      wallet: true,
-                    },
-                  },
-                }
-              : selectedMethod === 'Wallet'
-                ? {
-                    display: {
-                      blocks: [
-                        {
-                          name: 'Pay with Wallet',
-                          instruments: [{ method: 'wallet' }],
-                        },
-                      ],
-                      hide: {
-                        upi: true,
-                        card: true,
-                        netbanking: true,
-                      },
-                    },
-                  }
-                : undefined;
-
         const options = {
           key,
           amount,
@@ -287,7 +221,6 @@ export default function PaymentForm() {
             paymentMethod: selectedMethod,
             orderId: paymentSession.orderId,
           },
-          config: displayConfig,
           handler: async function (response) {
             try {
               const res = await axios.post('/api/payment-sessions/complete', {
